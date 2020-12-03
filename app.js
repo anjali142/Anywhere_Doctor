@@ -1,10 +1,13 @@
+
 var express = require('express');
 const bodyParser = require('body-parser');
 
 var app = express();
 var port = 8081;
 
-app.use(bodyParser.json());
+app.use(express.static(__dirname + '/views')); 										     // html
+app.use(express.static(__dirname + '/public'));											 // js, css, images
+app.use(bodyParser.json());		
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Database
@@ -22,9 +25,9 @@ db.once('open', function (callback)
 });
 
 // start the server
-app.listen(port, function() 
+const server = app.listen(process.env.PORT || 8081, () => 
 {
-	console.log('App started at port 8081');
+  console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
 });
 
 // route our app
@@ -33,6 +36,8 @@ app.get('/', function(req, res)
 	res.sendFile('index.html',{root:'./'});
 });
 
-app.get('/Bot',function(req,res) {
-    res.sendFile('index.html',{root:'./Bot'});
+// route our bot
+app.get('/bot', function(req, res) 
+{
+	res.sendFile('bot.html',{root:'./views'});
 });
