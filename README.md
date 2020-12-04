@@ -12,7 +12,7 @@ npm install -g nodemon
 ```
 npm install
 ```
-5. After this, use app.js to run the service on [localhost:8081](https://localhost:8081) and sudo mongod/mongo on another terminal to create and connect with a local mongo database.
+5. After this, use app.js to run the service on [localhost:8888](https://localhost:8888) and sudo mongod/mongo on another terminal to create and connect with a local mongo database.
 ```
 nodemon app.js
 ```
@@ -20,5 +20,5 @@ nodemon app.js
 ```
 sudo mongod
 ```
-6. On you browser (use chrome) open http://localhost:8081/
+6. On you browser (use chrome) open http://localhost:8888/
 

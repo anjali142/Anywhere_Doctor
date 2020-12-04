@@ -1,43 +1,69 @@
+const path = require("path");
+const express = require("express");
+const colors = require("colors");
+const dotenv = require("dotenv");
+const socketio = require("socket.io");
+const dialogflow = require("@google-cloud/dialogflow");
+const uuid = require("uuid");
+const app = express();
 
-var express = require('express');
-const bodyParser = require('body-parser');
+dotenv.config({ path: "./config/config.env" });
 
-var app = express();
-var port = 8081;
+app.use(express.static(path.join(__dirname, "views")));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use(express.static(__dirname + '/views')); 										     // html
-app.use(express.static(__dirname + '/public'));											 // js, css, images
-app.use(bodyParser.json());		
-app.use(bodyParser.urlencoded({ extended: true }));
+const PORT = 8888;
 
-//Database
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/docdoc', 
-{
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
-var db = mongoose.connection;
-db.on('error', console.log.bind(console, "connection error"));
-db.once('open', function (callback) 
-{
-	console.log("connection succeeded!");
-});
+const server = app.listen(
+  PORT,
+  console.log(
+    `Server is runnig on ${process.env.NODE_ENV} mode at port ${PORT}`.yellow
+      .bold
+  )
+);
 
-// start the server
-const server = app.listen(process.env.PORT || 8081, () => 
-{
-  console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
-});
+const io = socketio(server);
+io.on("connection", function (socket) {
+  console.log("a user connected");
 
-// route our app
-app.get('/', function(req, res) 
-{
-	res.sendFile('index.html',{root:'./'});
-});
+  socket.on("chat message", (message) => {
+    console.log(message);
 
-// route our bot
-app.get('/bot', function(req, res) 
-{
-	res.sendFile('bot.html',{root:'./views'});
+    const callapibot = async (projectId = process.env.PROJECT_ID) => {
+      try {
+        const sessionId = uuid.v4();
+        const sessionClient = new dialogflow.SessionsClient({
+          keyFilename: "./docdoc-tfyf-0d6768ec485b.json",
+        });
+        const sessionPath = sessionClient.projectAgentSessionPath(
+          projectId,
+          sessionId
+        );
+        const request = {
+          session: sessionPath,
+          queryInput: {
+            text: {
+              text: message,
+              languageCode: "en-US",
+            },
+          },
+        };
+        const responses = await sessionClient.detectIntent(request);
+
+        console.log("Detected intent");
+        const result = responses[0].queryResult.fulfillmentText;
+        socket.emit("bot reply", result);
+        console.log(result);
+        if (result.intent) {
+          console.log(`  Intent: ${result.intent.displayName}`);
+        } else {
+          console.log(`  No intent matched.`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    callapibot();
+  });
 });
