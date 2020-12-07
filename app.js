@@ -67,3 +67,7 @@ io.on("connection", function (socket) {
     callapibot();
   });
 });
+
+app.get('/locator',function(req,res) {
+    res.sendFile('locator.html',{root:'./views'});
+});
