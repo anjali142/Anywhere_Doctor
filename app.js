@@ -68,6 +68,10 @@ io.on("connection", function (socket) {
   });
 });
 
+app.get('/bot',function(req,res) {
+    res.sendFile('bot.html',{root:'./views'});
+});
+
 app.get('/locator',function(req,res) {
     res.sendFile('locator.html',{root:'./views'});
 });
