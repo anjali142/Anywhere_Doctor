@@ -75,3 +75,7 @@ app.get('/bot',function(req,res) {
 app.get('/locator',function(req,res) {
     res.sendFile('locator.html',{root:'./views'});
 });
+
+app.get('/checkup',function(req,res) {
+    res.sendFile('checkup.html',{root:'./views'});
+});
