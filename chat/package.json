@@ -1,14 +1,24 @@
 {
-  "name": "chat",
-  "version": "0.0.1",
-  "description": "a simple socket.io chat app",
-  "dependencies": {
-    "express": "^4.10.2",
-    "socket.io": "^1.7.4"
-  },
-  "main": "app.js",
-  "devDependencies": {},
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "Multi-room Chat Web Application built with NodeJS and socket.io",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "chat-app",
+    "multi-room-chat-app",
+    "multi-user-chat-app",
+    "nodejs",
+    "websockets",
+    "socket.io"
+  ],
+
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {}
 }
