@@ -15,9 +15,9 @@ angular.module('userProfile', ['ngMaterial', 'ngMessages'])
   
     // User data
     $scope.user = {
-      name: 'Adam Luxor',
+      name: 'Adam Brown',
       title: 'VP of User Experience',
-      department: 'Product',
+      bloodGroup: 'AB+',
       location: 'Atlanta',
       company: 'BetterCloud',
       manager: 'Emily Morgan',
