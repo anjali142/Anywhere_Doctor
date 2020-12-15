@@ -46,6 +46,6 @@ io.on('connection', function(socket){
 });
 
 //Listen at localhost:3000
-server.listen(3000, function(){
+server.listen(8000, function(){
   console.log('listening on *:3000');
 });
